@@ -1,8 +1,10 @@
 # octo-core
 
-This is the Octomatic Enterprise Core gem. It provides most of the ORM stuff. Class and modules for different tables.
+This is the Octomatic Enterprise Core gem (Activerecord version). It provides most of the ORM stuff. Class and modules for different tables.
 
-## Installting
+It supports AWS Redshift, via https://github.com/fiksu/activerecord-redshift-adapter 
+
+## Installation
 
 ```bash
 gem install octocore
