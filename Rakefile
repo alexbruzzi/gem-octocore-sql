@@ -1,10 +1,10 @@
-require 'cequel'
+require 'active_record'
 require 'yaml'
 require 'redis'
 require 'rspec/core/rake_task'
 
-require 'octocore/helpers/kong_helper'
-require 'octocore/config'
+require 'octocore-mysql/helpers/kong_helper'
+require 'octocore-mysql/config'
 
 RSpec::Core::RakeTask.new('spec')
 
@@ -20,7 +20,7 @@ task :environment do
   end
   Octo.load_config config
   connection = Cequel.connect(Octo.get_config(:cassandra))
-  Cequel::Record.connection = connection
+  ActiveRecord::Base.connection = connection
 end
 
 # Load default tasks from Cequel
@@ -42,7 +42,7 @@ namespace :octo do
   task :reset => :environment do
     kong_delete
     clear_cache
-    if Cequel::Record.connection.schema.exists?
+    if ActiveRecord::Base.connection.schema.exists?
       task('cequel:keyspace:drop').invoke
     end
     task('cequel:keyspace:create').invoke
@@ -113,7 +113,7 @@ def migrate
         puts e
       else
         if clazz.is_a?(Class)
-          if clazz.ancestors.include?(Cequel::Record) &&
+          if clazz.ancestors.include?(ActiveRecord::Base) &&
               !migration_table_names.include?(clazz.table_name.to_sym)
             clazz.synchronize_schema
             migration_table_names << clazz.table_name.to_sym
@@ -125,7 +125,7 @@ def migrate
           clazzes.each do |_clazz|
             _cls = clazz.const_get(_clazz)
             if _cls.is_a?(Class) and !classes.include?_cls
-              if _cls.ancestors.include?(Cequel::Record) &&
+              if _cls.ancestors.include?(ActiveRecord::Base) &&
                   !migration_table_names.include?(_cls.table_name.to_sym)
                 _cls.synchronize_schema
                 migration_table_names << _cls.table_name.to_sym
