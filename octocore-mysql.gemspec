@@ -27,6 +27,7 @@ DESC
   s.required_ruby_version = '>= 2.0'
 
   s.add_runtime_dependency 'activerecord', '~> 4.2', '>= 4.2.7.1'
+  s.add_runtime_dependency 'mysql2', '~> 0.4.4'
   s.add_runtime_dependency 'redis', '~> 3.2.2', '>= 3.2.0'
   s.add_runtime_dependency 'redis-queue', '~> 0.0.4', '>= 0.0.4'
   s.add_runtime_dependency 'hiredis', '~> 0.6.1', '>= 0.6.0'

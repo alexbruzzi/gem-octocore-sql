@@ -2,66 +2,59 @@ require 'active_record'
 require 'yaml'
 require 'redis'
 require 'rspec/core/rake_task'
-
-require 'octocore-mysql/helpers/kong_helper'
 require 'octocore-mysql/config'
 
 RSpec::Core::RakeTask.new('spec')
 
 task :environment do
-  config_dir = ENV['CONFIG_DIR'] || 'lib/octocore/config/'
-  config = {}
-  Dir[config_dir + '**{,/*/**}/*.yml'].each do |file|
-    _config = YAML.load_file(file)
-    if _config
-      puts "loading from file: #{ file }"
-      config = config.merge(_config.deep_symbolize_keys)
-    end
-  end
+  config_dir = ENV['CONFIG_DIR'] || 'lib/octocore-mysql/config/'
+  config = {
+    mysql: {
+      host: '127.0.0.1',
+      user: 'root',
+      password: 'pass',
+      database: 'octo'
+    }
+  }
+  # config = {}
+  # Dir[config_dir + '**{,/*/**}/*.yml'].each do |file|
+  #   _config = YAML.load_file(file)
+  #   if _config
+  #     puts "loading from file: #{ file }"
+  #     config = config.merge(_config.deep_symbolize_keys!)
+  #   end
+  # end
   Octo.load_config config
-  connection = Cequel.connect(Octo.get_config(:cassandra))
-  ActiveRecord::Base.connection = connection
+
+  mysql_config = Octo.get_config(:mysql)
+  puts mysql_config
+  ActiveRecord::Base.establish_connection(
+    adapter: "mysql2",
+    host: mysql_config[:host],
+    username: mysql_config[:user],
+    password: mysql_config[:password],
+    database: mysql_config[:database]
+  )
+
+  ActiveRecord::Base.logger = 
+    Logger.new(File.open('database.log', 'a'))
 end
 
-# Load default tasks from Cequel
-spec = Gem::Specification.find_by_name 'cequel'
-load "#{spec.gem_dir}/lib/cequel/record/tasks.rb"
-
-# Remove those tasks from cequel which we shall override
-%w(cequel:init cequel:migrate cequel:reset).each do |t|
-  Rake.application.instance_variable_get('@tasks').delete(t)
-end
-
-# Overriding rake actions
 namespace :octo do
 
-  desc 'Create keyspace and tables for all defined models'
-  task :init => %w(environment cequel:keyspace:create octo:migrate)
-
-  desc 'Drop keyspace if exists, then create and migrate'
+  desc "Migrate the database through scripts in lib/octocore-mysql/migrations. 
+      Target specific version with VERSION=x"
   task :reset => :environment do
-    kong_delete
     clear_cache
-    if ActiveRecord::Base.connection.schema.exists?
-      task('cequel:keyspace:drop').invoke
-    end
-    task('cequel:keyspace:create').invoke
-    migrate
+    ActiveRecord::Migrator.migrate('lib/octocore-mysql/migrations', 
+      ENV["VERSION"] ? ENV["VERSION"].to_i : nil )
   end
 
-  desc "Synchronize all models defined in `lib/octocore/models' with Cassandra " \
-       "database schema"
+  desc "Migrate the database through scripts in lib/octocore-mysql/migrations. 
+      Target specific version with VERSION=x"
   task :migrate => :environment do
-    migrate
-  end
-end
-
-# Delete Kong Consumers and Apis
-def kong_delete
-  kong_config = Octo.get_config :kong
-  if kong_config[:enabled]
-    Octo::Helpers::KongBridge.delete_all
-    puts 'Kong Cleaned'
+    ActiveRecord::Migrator.migrate('lib/octocore-mysql/migrations', 
+      ENV["VERSION"] ? ENV["VERSION"].to_i : nil )
   end
 end
 
@@ -74,69 +67,3 @@ def clear_cache
   redis.flushall
   puts 'Cache Cleaned'
 end
-
-def migrate
-  watch_stack = ActiveSupport::Dependencies::WatchStack.new
-
-  migration_table_names = Set[]
-
-  classes = Set[]
-
-  project_root = Dir.pwd
-  models_dir_path = "#{File.expand_path('lib/octocore/models', project_root)}/"
-  model_files = Dir.glob(File.join(models_dir_path, '**', '*.rb'))
-
-  model_files.sort.each do |file|
-    watch_namespaces = ["Object"]
-    model_file_name = file.sub(/^#{Regexp.escape(models_dir_path)}/, "")
-    dirname = File.dirname(model_file_name)
-    watch_namespaces << dirname.classify unless dirname == "."
-    watch_stack.watch_namespaces(watch_namespaces)
-
-    require_dependency(file)
-
-    new_constants = watch_stack.new_constants
-    if new_constants.empty?
-      _new = model_file_name.sub(/\.rb$/, "")
-      if Octo.constants.include?_new.classify.to_sym
-        new_constants << "Octo"
-      else
-        new_constants << "Octo"
-        #new_constants << _new.classify
-      end
-    end
-
-    new_constants.each do |class_name|
-      begin
-        clazz = class_name.constantize
-      rescue LoadError, RuntimeError, NameError => e
-        puts e
-      else
-        if clazz.is_a?(Class)
-          if clazz.ancestors.include?(ActiveRecord::Base) &&
-              !migration_table_names.include?(clazz.table_name.to_sym)
-            clazz.synchronize_schema
-            migration_table_names << clazz.table_name.to_sym
-            puts "** Synchronized schema for #{class_name}"
-          end
-        elsif clazz.is_a?(Module)
-          method_name = :constants
-          clazzes = clazz.public_send(method_name) if clazz.respond_to? method_name
-          clazzes.each do |_clazz|
-            _cls = clazz.const_get(_clazz)
-            if _cls.is_a?(Class) and !classes.include?_cls
-              if _cls.ancestors.include?(ActiveRecord::Base) &&
-                  !migration_table_names.include?(_cls.table_name.to_sym)
-                _cls.synchronize_schema
-                migration_table_names << _cls.table_name.to_sym
-                puts "Synchronized schema for #{_cls}"
-                classes << _cls
-              end
-            end
-          end
-        end
-      end
-    end
-  end
-end
-

@@ -1,6 +1,6 @@
 # octocore-mysql
 
-This is the Octomatic Enterprise Core gem. It provides most of the ORM stuff for Cassandra. Class and modules for different tables.
+This is the Octomatic Enterprise Core gem (Activerecord version). It provides most of the ORM stuff. Class and modules for different tables.
 
 ## Installting
 
@@ -20,10 +20,10 @@ gem 'octocore-mysql', :git => 'git@github.com:octoai/gem-octocore-mysql.git'
 
 ### OctoAdmin CLI
 
-This gem comes with a handy utility called `octocore-admin-cassandra`. You can use this utility for db migrations, reset and init.
+This gem comes with a handy utility called `octocore-admin-mysql`. You can use this utility for db migrations, reset and init.
 
 ```bash
-$ octocore-admin-cassandra action path/to/config/dir
+$ octocore-admin-mysql action path/to/config/dir
 ```
 
 Where
@@ -65,5 +65,5 @@ Octo.connect_with_config_file config_dir
 It ships with a utility called `fakestream`. It will automatically stream random data. To use just open your console and type
 
 ```bash
-$ fakestream-cassandra /path/to/config/dir
+$ fakestream-mysql /path/to/config/dir
 ```
