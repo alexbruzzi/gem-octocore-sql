@@ -1,19 +1,17 @@
-# octo-core
+# octocore-mysql
 
-This is the Octomatic Enterprise Core gem (Activerecord version). It provides most of the ORM stuff. Class and modules for different tables.
+This is the Octomatic Enterprise Core gem. It provides most of the ORM stuff for Cassandra. Class and modules for different tables.
 
-It supports AWS Redshift, via https://github.com/fiksu/activerecord-redshift-adapter 
-
-## Installation
+## Installting
 
 ```bash
-gem install octocore
+gem install octocore-mysql
 ```
 
 In case you are using bundler, you need to add something like this to your Gemfile:
 
 ```ruby
-gem 'octocore', :git => 'git@github.com:octoai/gem-octocore.git'
+gem 'octocore-mysql', :git => 'git@github.com:octoai/gem-octocore-mysql.git'
 ```
 
 
@@ -22,10 +20,10 @@ gem 'octocore', :git => 'git@github.com:octoai/gem-octocore.git'
 
 ### OctoAdmin CLI
 
-This gem comes with a handy utility called `octocore-admin`. You can use this utility for db migrations, reset and init.
+This gem comes with a handy utility called `octocore-admin-cassandra`. You can use this utility for db migrations, reset and init.
 
 ```bash
-$ octocore-admin action path/to/config/dir
+$ octocore-admin-cassandra action path/to/config/dir
 ```
 
 Where
@@ -38,7 +36,7 @@ Where
 
 ## Clone the repo
 
-`$ git clone git@github.com:octoai/gem-octocore.git`
+`$ git clone git@github.com:octoai/gem-octocore-mysql.git`
 
 ## Building
 
@@ -57,7 +55,7 @@ $ rake spec
 You can use the following set of commands in `irb` to verify all things working with this gem. Execute it from irb in PROJ_DIR.
 
 ```ruby
-require 'octocore'
+require 'octocore-mysql'
 config_dir = '/path/to/config/dir'
 Octo.connect_with_config_file config_dir
 ```
@@ -67,5 +65,5 @@ Octo.connect_with_config_file config_dir
 It ships with a utility called `fakestream`. It will automatically stream random data. To use just open your console and type
 
 ```bash
-$ fakestream /path/to/config/dir
+$ fakestream-cassandra /path/to/config/dir
 ```
