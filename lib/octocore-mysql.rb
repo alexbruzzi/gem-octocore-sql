@@ -114,9 +114,14 @@ module Octo
     self.logger.info('Octo booting up.')
 
     # Establish Cequel Connection
-    cassandra_config = Octo.get_config(:cassandra)
-    connection = Cequel.connect(cassandra_config)
-    ActiveRecord::Base.connection = connection
+    mysql_config = Octo.get_config(:mysql)
+    ActiveRecord::Base.establish_connection(
+      adapter: "mysql2",
+      host: mysql_config[:host],
+      username: mysql_config[:user],
+      password: mysql_config[:password],
+      database: mysql_config[:database]
+    )
 
     # Establish connection to cache server
     default_cache = {
