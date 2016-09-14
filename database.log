@@ -1,18 +1,39 @@
-D, [2016-09-12T13:33:04.191859 #6881] DEBUG -- :   [1m[36m (12.6ms)[0m  [1mCREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL) ENGINE=InnoDB[0m
-D, [2016-09-12T13:33:04.243843 #6881] DEBUG -- :   [1m[35m (49.8ms)[0m  CREATE UNIQUE INDEX `unique_schema_migrations`  ON `schema_migrations` (`version`) 
-D, [2016-09-12T13:33:04.245514 #6881] DEBUG -- :   [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
-I, [2016-09-12T13:33:04.247330 #6881]  INFO -- : Migrating to CreateEnterprise (1)
-D, [2016-09-12T13:34:10.124034 #6914] DEBUG -- :   [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
-I, [2016-09-12T13:34:10.126211 #6914]  INFO -- : Migrating to CreateEnterprise (1)
-D, [2016-09-12T13:34:55.496027 #6931] DEBUG -- :   [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
-I, [2016-09-12T13:34:55.498965 #6931]  INFO -- : Migrating to CreateEnterprise (1)
-D, [2016-09-12T13:34:55.506048 #6931] DEBUG -- :   [1m[35m (3.2ms)[0m  CREATE TABLE `enterprise` (`id` int(11) auto_increment PRIMARY KEY, `_id` varchar(255) NOT NULL, `name` varchar(255)) ENGINE=InnoDB
-D, [2016-09-12T13:34:55.513058 #6931] DEBUG -- :   [1m[36m (3.6ms)[0m  [1mBEGIN[0m
-D, [2016-09-12T13:34:55.549818 #6931] DEBUG -- :   [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('1')
-D, [2016-09-12T13:34:55.564176 #6931] DEBUG -- :   [1m[36m (14.0ms)[0m  [1mCOMMIT[0m
-D, [2016-09-12T14:40:52.766876 #7545] DEBUG -- :   [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
-I, [2016-09-12T14:40:52.769458 #7545]  INFO -- : Migrating to CreateUser (2)
-D, [2016-09-12T14:40:52.775810 #7545] DEBUG -- :   [1m[35m (3.8ms)[0m  CREATE TABLE `user` (`id` int(11) auto_increment PRIMARY KEY, `_id` int(11) NOT NULL) ENGINE=InnoDB
-D, [2016-09-12T14:40:52.776717 #7545] DEBUG -- :   [1m[36m (0.3ms)[0m  [1mBEGIN[0m
-D, [2016-09-12T14:40:52.779294 #7545] DEBUG -- :   [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('2')
-D, [2016-09-12T14:40:52.781510 #7545] DEBUG -- :   [1m[36m (1.9ms)[0m  [1mCOMMIT[0m
+D, [2016-09-14T13:01:09.043430 #3464] DEBUG -- :   [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+I, [2016-09-14T13:01:09.056646 #3464]  INFO -- : Migrating to CreateContactUs (3)
+D, [2016-09-14T13:01:09.088627 #3464] DEBUG -- :   [1m[35m (30.4ms)[0m  CREATE TABLE `contact_us` (`id` int(11) auto_increment PRIMARY KEY, `email` text NOT NULL, `typeofrequest` text, `firstname` varchar(255), `lastname` varchar(255), `message` text) ENGINE=InnoDB
+D, [2016-09-14T13:01:09.089373 #3464] DEBUG -- :   [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+D, [2016-09-14T13:01:09.120694 #3464] DEBUG -- :   [1m[35mSQL (1.0ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('3')
+D, [2016-09-14T13:01:09.123250 #3464] DEBUG -- :   [1m[36m (2.2ms)[0m  [1mCOMMIT[0m
+I, [2016-09-14T13:01:09.123356 #3464]  INFO -- : Migrating to CreateSubscribe (4)
+D, [2016-09-14T13:01:09.140718 #3464] DEBUG -- :   [1m[35m (14.5ms)[0m  CREATE TABLE `subscribe` (`id` int(11) auto_increment PRIMARY KEY, `email` text NOT NULL) ENGINE=InnoDB
+D, [2016-09-14T13:01:09.142152 #3464] DEBUG -- :   [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+D, [2016-09-14T13:01:09.142799 #3464] DEBUG -- :   [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('4')
+D, [2016-09-14T13:01:09.144150 #3464] DEBUG -- :   [1m[36m (1.2ms)[0m  [1mCOMMIT[0m
+I, [2016-09-14T13:01:09.144234 #3464]  INFO -- : Migrating to CreatePlans (5)
+D, [2016-09-14T13:01:09.148232 #3464] DEBUG -- :   [1m[35m (3.1ms)[0m  CREATE TABLE `plans` (`id` int(11) auto_increment PRIMARY KEY, `active` tinyint(1) NOT NULL, `name` text) ENGINE=InnoDB
+D, [2016-09-14T13:01:09.148762 #3464] DEBUG -- :   [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+D, [2016-09-14T13:01:09.149402 #3464] DEBUG -- :   [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('5')
+D, [2016-09-14T13:01:09.151296 #3464] DEBUG -- :   [1m[36m (1.7ms)[0m  [1mCOMMIT[0m
+I, [2016-09-14T13:01:09.151373 #3464]  INFO -- : Migrating to CreatePushToken (6)
+D, [2016-09-14T13:01:09.155399 #3464] DEBUG -- :   [1m[35m (3.1ms)[0m  CREATE TABLE `push_token` (`id` int(11) auto_increment PRIMARY KEY, `push_type` int(11) NOT NULL, `pushtoken` text) ENGINE=InnoDB
+D, [2016-09-14T13:01:09.155892 #3464] DEBUG -- :   [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+D, [2016-09-14T13:01:09.156488 #3464] DEBUG -- :   [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('6')
+D, [2016-09-14T13:01:09.158541 #3464] DEBUG -- :   [1m[36m (1.8ms)[0m  [1mCOMMIT[0m
+I, [2016-09-14T13:01:09.158632 #3464]  INFO -- : Migrating to CreateUserBrowserDetails (7)
+D, [2016-09-14T13:01:09.162310 #3464] DEBUG -- :   [1m[35m (2.9ms)[0m  CREATE TABLE `user_browser_details` (`id` int(11) auto_increment PRIMARY KEY, `cookieid` text, `name` text, `platform` text, `manufacturer` text) ENGINE=InnoDB
+D, [2016-09-14T13:01:09.162847 #3464] DEBUG -- :   [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+D, [2016-09-14T13:01:09.163463 #3464] DEBUG -- :   [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('7')
+D, [2016-09-14T13:01:09.163934 #3464] DEBUG -- :   [1m[36m (0.3ms)[0m  [1mCOMMIT[0m
+I, [2016-09-14T13:01:09.163999 #3464]  INFO -- : Migrating to CreateUserLocationHistory (8)
+D, [2016-09-14T13:01:09.169364 #3464] DEBUG -- :   [1m[35m (4.6ms)[0m  CREATE TABLE `user_location_history` (`id` int(11) auto_increment PRIMARY KEY, `latitude` decimal, `longitude` decimal) ENGINE=InnoDB
+D, [2016-09-14T13:01:09.169880 #3464] DEBUG -- :   [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+D, [2016-09-14T13:01:09.170546 #3464] DEBUG -- :   [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('8')
+D, [2016-09-14T13:01:09.171577 #3464] DEBUG -- :   [1m[36m (0.9ms)[0m  [1mCOMMIT[0m
+I, [2016-09-14T13:01:09.171657 #3464]  INFO -- : Migrating to CreateUserPersona (9)
+D, [2016-09-14T13:01:09.172658 #3464] DEBUG -- :   [1m[35m (0.3ms)[0m  CREATE TABLE `user_persona` (`id` int(11) auto_increment PRIMARY KEY, `ts` timestamps NOT NULL, `engagement` decimal) ENGINE=InnoDB
+D, [2016-09-14T13:02:09.490590 #3482] DEBUG -- :   [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+I, [2016-09-14T13:02:09.493792 #3482]  INFO -- : Migrating to CreateUserPersona (9)
+D, [2016-09-14T13:02:09.508261 #3482] DEBUG -- :   [1m[35m (13.1ms)[0m  CREATE TABLE `user_persona` (`id` int(11) auto_increment PRIMARY KEY, `ts` time NOT NULL, `engagement` decimal) ENGINE=InnoDB
+D, [2016-09-14T13:02:09.508941 #3482] DEBUG -- :   [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+D, [2016-09-14T13:02:09.511318 #3482] DEBUG -- :   [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('9')
+D, [2016-09-14T13:02:09.518857 #3482] DEBUG -- :   [1m[36m (7.2ms)[0m  [1mCOMMIT[0m
