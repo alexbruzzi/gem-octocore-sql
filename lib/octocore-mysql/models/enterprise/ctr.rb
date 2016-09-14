@@ -3,8 +3,7 @@ require 'octocore-mysql/record'
 
 module Octo
 
-  class Ctr
- < ActiveRecord::Base
+  class Ctr < ActiveRecord::Base
     include Octo::Record
 
     # Type of Ctr. Reserved for future use

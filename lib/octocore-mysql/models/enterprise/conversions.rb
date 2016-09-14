@@ -4,8 +4,7 @@ require 'octocore-mysql/record'
 module Octo
 
   # The conversions store
-  class Conversions
- < ActiveRecord::Base
+  class Conversions < ActiveRecord::Base
     include Octo::Record
 
     # Types of conversions
