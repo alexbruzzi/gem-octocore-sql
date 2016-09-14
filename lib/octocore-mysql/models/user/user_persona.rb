@@ -2,8 +2,7 @@ require 'active_record'
 
 module Octo
 
-  class UserPersona
- < ActiveRecord::Base
+  class UserPersona < ActiveRecord::Base
 
     HIGH_ENGAGED = 0
     MEDIUM_ENGAGED = 1

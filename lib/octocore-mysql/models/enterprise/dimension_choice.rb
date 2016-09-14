@@ -4,8 +4,7 @@ require 'octocore-mysql/record'
 module Octo
 
   # Choices for dimensions
-  class DimensionChoice
- < ActiveRecord::Base
+  class DimensionChoice < ActiveRecord::Base
     include Octo::Record
 
     belongs_to :enterprise, class_name: 'Octo::Enterprise'

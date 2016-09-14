@@ -18,7 +18,7 @@ DESC
   s.executables << 'octocore-admin-mysql'
 
   s.homepage    =
-    'https://github.com/octoai/gem-octocore-mysql'
+    'https://github.com/octoai/gem-octocore-sql'
   s.license       = 'MIT'
 
   s.has_rdoc    = true
